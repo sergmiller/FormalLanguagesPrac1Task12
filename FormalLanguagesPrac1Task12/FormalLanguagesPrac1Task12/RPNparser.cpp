@@ -46,57 +46,62 @@ NFA::NFA(string& regExpInRPN) {
     char letter;
     sizeVert = 0;
     
-    try {
-        for(size_t i = 0;i < regExpInRPN.size(); ++i) {
-            letter = regExpInRPN[i];
-            switch (letter) {
-                case '*':
-                    operand = parsStack.top();
-                    operand.first->next.push_back(operand.second);
-                    operand.second->next.push_back(operand.first);
-                    break;
-                case '.':
-                    rightOperand = parsStack.top();
-                    parsStack.pop();
-                    leftOperand = parsStack.top();
-                    parsStack.pop();
-                    rightOperand.first->next.push_back(leftOperand.second);
-                    parsStack.push(make_pair(leftOperand.first, rightOperand.second));
-                    break;
-                case '+':
-                    rightOperand = parsStack.top();
-                    parsStack.pop();
-                    leftOperand = parsStack.top();
-                    parsStack.pop();
-                    rightOperand.first->next.push_back(leftOperand.first);
-                    leftOperand.second->next.push_back(rightOperand.second);
-                    parsStack.push(leftOperand);
-                    break;
-                case '1':
-                    emptyBuff = new GraphNode('-', sizeVert++);
-                    parsStack.push(make_pair(emptyBuff, emptyBuff));
-                    break;
-                default:
-                    leftEmptyBuff = new GraphNode('-', sizeVert++);
-                    rightEmptyBuff = new GraphNode('-', sizeVert++);
-                    letterVert = new GraphNode(letter, sizeVert++);
-                    rightEmptyBuff->next.push_back(letterVert);
-                    letterVert->next.push_back(leftEmptyBuff);
-                    parsStack.push(make_pair(leftEmptyBuff, rightEmptyBuff));
-                    break;
-            }
+    for(size_t i = 0;i < regExpInRPN.size(); ++i) {
+        letter = regExpInRPN[i];
+        switch (letter) {
+            case '*':
+                if(parsStack.empty()) {
+                    throw BadRegExpInRPNException("");
+                }
+                operand = parsStack.top();
+                operand.first->next.push_back(operand.second);
+                operand.second->next.push_back(operand.first);
+                break;
+            case '.':
+                if(parsStack.size() < 2) {
+                    throw BadRegExpInRPNException("");
+                }
+                rightOperand = parsStack.top();
+                parsStack.pop();
+                leftOperand = parsStack.top();
+                parsStack.pop();
+                rightOperand.first->next.push_back(leftOperand.second);
+                parsStack.push(make_pair(leftOperand.first, rightOperand.second));
+                break;
+            case '+':
+                if(parsStack.size() < 2) {
+                    throw BadRegExpInRPNException("");
+                }
+                rightOperand = parsStack.top();
+                parsStack.pop();
+                leftOperand = parsStack.top();
+                parsStack.pop();
+                rightOperand.first->next.push_back(leftOperand.first);
+                leftOperand.second->next.push_back(rightOperand.second);
+                parsStack.push(leftOperand);
+                break;
+            case '1':
+                emptyBuff = new GraphNode('-', sizeVert++);
+                parsStack.push(make_pair(emptyBuff, emptyBuff));
+                break;
+            default:
+                leftEmptyBuff = new GraphNode('-', sizeVert++);
+                rightEmptyBuff = new GraphNode('-', sizeVert++);
+                letterVert = new GraphNode(letter, sizeVert++);
+                rightEmptyBuff->next.push_back(letterVert);
+                letterVert->next.push_back(leftEmptyBuff);
+                parsStack.push(make_pair(leftEmptyBuff, rightEmptyBuff));
+                break;
         }
-        
-        if(parsStack.size() != 1) {
-            throw BadRegExpInRPNException("");
-        } else {
-            operand = parsStack.top();
-            parsStack.pop();
-            start = operand.first;
-            finish = operand.second;
-        }
-    } catch(...) {
+    }
+    
+    if(parsStack.size() != 1) {
         throw BadRegExpInRPNException("");
+    } else {
+        operand = parsStack.top();
+        parsStack.pop();
+        start = operand.first;
+        finish = operand.second;
     }
 }
 
