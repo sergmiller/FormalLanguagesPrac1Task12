@@ -54,8 +54,12 @@ NFA::NFA(string& regExpInRPN) {
                     throw BadRegExpInRPNException("");
                 }
                 operand = parsStack.top();
+                parsStack.pop();
+                emptyBuff = new GraphNode('-', sizeVert++);
+                emptyBuff->next.push_back(operand.first);
+                emptyBuff->next.push_back(operand.second);
                 operand.first->next.push_back(operand.second);
-                operand.second->next.push_back(operand.first);
+                parsStack.push(make_pair(operand.first, emptyBuff));
                 break;
             case '.':
                 if(parsStack.size() < 2) {
@@ -76,9 +80,13 @@ NFA::NFA(string& regExpInRPN) {
                 parsStack.pop();
                 leftOperand = parsStack.top();
                 parsStack.pop();
-                rightOperand.first->next.push_back(leftOperand.first);
-                leftOperand.second->next.push_back(rightOperand.second);
-                parsStack.push(leftOperand);
+                leftEmptyBuff = new GraphNode('-', sizeVert++);
+                rightEmptyBuff = new GraphNode('-', sizeVert++);
+                rightOperand.first->next.push_back(leftEmptyBuff);
+                leftOperand.first->next.push_back(leftEmptyBuff);
+                rightEmptyBuff->next.push_back(leftOperand.second);
+                rightEmptyBuff->next.push_back(rightOperand.second);
+                parsStack.push(make_pair(leftEmptyBuff, rightEmptyBuff));
                 break;
             case '1':
                 emptyBuff = new GraphNode('-', sizeVert++);
