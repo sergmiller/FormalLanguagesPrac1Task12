@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FormalLanguagesPrac1Task12/RPNparser.cpp"
-            timestampString = "468705772.495653"
+            timestampString = "471204643.880509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "findSizeOfMaxWordSuffixInRegExp(string&amp; regExp, string&amp; word)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FormalLanguagesPrac1Task12/RPNparser.cpp"
-            timestampString = "468705772.495653"
+            timestampString = "471204643.880509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "NFA::findMaxPathInDFS(string&amp; word)"
             landmarkType = "5">
          </BreakpointContent>

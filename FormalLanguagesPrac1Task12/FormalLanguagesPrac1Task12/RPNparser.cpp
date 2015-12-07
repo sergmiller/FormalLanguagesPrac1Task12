@@ -55,11 +55,14 @@ NFA::NFA(string& regExpInRPN) {
                 }
                 operand = parsStack.top();
                 parsStack.pop();
-                emptyBuff = new GraphNode('-', sizeVert++);
-                emptyBuff->next.push_back(operand.first);
-                emptyBuff->next.push_back(operand.second);
+                leftEmptyBuff = new GraphNode('-', sizeVert++);
+                rightEmptyBuff = new GraphNode('-', sizeVert++);
+                operand.first->next.push_back(leftEmptyBuff);
+                rightEmptyBuff->next.push_back(operand.second);
+                
                 operand.first->next.push_back(operand.second);
-                parsStack.push(make_pair(operand.first, emptyBuff));
+                operand.second->next.push_back(operand.first);
+                parsStack.push(make_pair(leftEmptyBuff, rightEmptyBuff));
                 break;
             case '.':
                 if(parsStack.size() < 2) {
