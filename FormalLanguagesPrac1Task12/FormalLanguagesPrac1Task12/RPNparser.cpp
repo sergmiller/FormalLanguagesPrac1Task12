@@ -91,13 +91,12 @@ NFA::NFA(string& regExpInRPN) {
                 rightEmptyBuff->next.push_back(rightOperand.second);
                 parsStack.push(make_pair(leftEmptyBuff, rightEmptyBuff));
                 break;
-            case '1':
-                emptyBuff = new GraphNode('-', sizeVert++);
-                parsStack.push(make_pair(emptyBuff, emptyBuff));
-                break;
             default:
                 leftEmptyBuff = new GraphNode('-', sizeVert++);
                 rightEmptyBuff = new GraphNode('-', sizeVert++);
+                if(letter == '1') {
+                    letter = '-';
+                }
                 letterVert = new GraphNode(letter, sizeVert++);
                 rightEmptyBuff->next.push_back(letterVert);
                 letterVert->next.push_back(leftEmptyBuff);

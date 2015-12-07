@@ -12,8 +12,8 @@
 
 int main(int argc, const char * argv[]) {
     // aba.*.* acbaaba
-    string regExp = arg[1];
-    string word = arg[2];
+    string regExp = argv[1];
+    string word = argv[2];
     int ans;
     try {
         ans = findSizeOfMaxWordSuffixInRegExp(regExp, word);
